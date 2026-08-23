@@ -1,0 +1,101 @@
+{
+    "name": "ansi-viewer",
+    "displayName": "ANSI Viewer",
+    "description": "Renders a file's ANSI escape sequences in a WebView panel with line numbers and Ctrl+F find, auto-opens .log/.ansi/.ans files in it, and provides title-bar buttons to toggle line wrap and switch between the rendered view and the editable text. Scales to large files by relying on the browser's HTML renderer instead of VS Code's per-byte text-decoration API.",
+    "publisher": "nerdfever",
+    "version": "0.9.0",
+    "license": "MIT",
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nerdfever/ansi-viewer.git"
+    },
+    "categories": [
+        "Visualization",
+        "Other"
+    ],
+    "keywords": [
+        "ansi",
+        "log",
+        "viewer",
+        "escape sequences",
+        "colors",
+        "terminal"
+    ],
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "main": "./extension.js",
+    "activationEvents": [
+        "onCommand:nerdfever.ansi-viewer.open",
+        "onCommand:nerdfever.ansi-viewer.edit",
+        "onCommand:nerdfever.ansi-viewer.toggleWrap",
+        "onCommand:nerdfever.ansi-viewer.mdPreview",
+        "onCommand:nerdfever.ansi-viewer.mdSource",
+        "onLanguage:log",
+        "onLanguage:markdown"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "nerdfever.ansi-viewer.open",
+                "title": "Open in ANSI Viewer",
+                "category": "ANSI Viewer",
+                "icon": "$(eye)"
+            },
+            {
+                "command": "nerdfever.ansi-viewer.edit",
+                "title": "Edit as Text",
+                "category": "ANSI Viewer",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "nerdfever.ansi-viewer.toggleWrap",
+                "title": "Toggle Line Wrap",
+                "category": "ANSI Viewer",
+                "icon": "$(word-wrap)"
+            },
+            {
+                "command": "nerdfever.ansi-viewer.mdPreview",
+                "title": "Open Markdown Preview",
+                "category": "ANSI Viewer",
+                "icon": "$(open-preview)"
+            },
+            {
+                "command": "nerdfever.ansi-viewer.mdSource",
+                "title": "Edit Markdown Source",
+                "category": "ANSI Viewer",
+                "icon": "$(edit)"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "nerdfever.ansi-viewer.toggleWrap",
+                    "when": "activeWebviewPanelId == 'nerdfever.ansi-viewer'",
+                    "group": "navigation@99"
+                },
+                {
+                    "command": "nerdfever.ansi-viewer.edit",
+                    "when": "activeWebviewPanelId == 'nerdfever.ansi-viewer'",
+                    "group": "navigation@100"
+                },
+                {
+                    "command": "nerdfever.ansi-viewer.open",
+                    "when": "!activeWebviewPanelId && resourceExtname =~ /\\.(log|ansi|ans)$/",
+                    "group": "navigation@100"
+                },
+                {
+                    "command": "nerdfever.ansi-viewer.mdSource",
+                    "when": "activeWebviewPanelId == 'markdown.preview'",
+                    "group": "navigation@100"
+                },
+                {
+                    "command": "nerdfever.ansi-viewer.mdPreview",
+                    "when": "!activeWebviewPanelId && resourceExtname == '.md'",
+                    "group": "navigation@100"
+                }
+            ]
+        }
+    }
+}
