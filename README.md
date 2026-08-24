@@ -1,4 +1,4 @@
-# ANSI Viewer
+# ANSI Log Viewer
 
 Renders a file's ANSI escape sequences — the colors and styles your
 build tools and loggers emit — in a WebView panel, with line numbers
