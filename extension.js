@@ -290,12 +290,21 @@ function activate(context) {
                 await closeMdPreviewTabs(ed.document.uri);   // leave only the source tab
             }
         }),
-        vscode.workspace.onDidOpenTextDocument(d => autoOpen(d, 'onDidOpenTextDocument')),
+
+        // 2026-10-26 Claude Opus 5.5: auto-flip only documents the user actually sees in an editor.
+        // There is deliberately NO workspace.onDidOpenTextDocument listener: that event also fires for
+        // invisible documents other extensions open with workspace.openTextDocument() -- e.g. Claude
+        // Code opens every file it reads or edits that way, to check it for unsaved changes -- and
+        // flipping those popped an unasked-for preview tab up in front of whatever the user was typing.
+        // Opening a file in an editor makes it the active editor, so this one event covers every open
+        // the user makes, including switching to a .md/.log tab.
         vscode.window.onDidChangeActiveTextEditor(e => { if (e) autoOpen(e.document, 'onDidChangeActiveTextEditor'); })
     );
 
-    // The file that triggered activation (onLanguage:log) is already open by the time activate() runs.
-    vscode.workspace.textDocuments.forEach(d => autoOpen(d, 'startup'));
+    // 2026-10-26 Claude Opus 5.5: catch up on what was already on screen before activate() ran.
+    // The file that triggered activation (onLanguage:log) may already be showing. Only VISIBLE editors
+    // count, not workspace.textDocuments, which also holds documents nobody opened in an editor.
+    vscode.window.visibleTextEditors.forEach(e => autoOpen(e.document, 'startup'));
 }
 
 function deactivate() {}
