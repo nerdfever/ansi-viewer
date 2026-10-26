@@ -3,7 +3,7 @@
     "displayName": "ANSI Log Viewer",
     "description": "Renders a file's ANSI escape sequences in a WebView panel with line numbers and Ctrl+F find, auto-opens .log/.ansi/.ans files in it, and provides title-bar buttons to toggle line wrap and switch between the rendered view and the editable text. Scales to large files by relying on the browser's HTML renderer instead of VS Code's per-byte text-decoration API.",
     "publisher": "nerdfever",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "license": "MIT",
     "icon": "icon.png",
     "repository": {
@@ -25,8 +25,15 @@
     "engines": {
         "vscode": "^1.74.0"
     },
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true,
+            "description": "Read-only rendering of ANSI escape codes; runs nothing, so it works in Restricted Mode."
+        }
+    },
     "main": "./extension.js",
     "activationEvents": [
+        "onStartupFinished",
         "onCommand:nerdfever.ansi-viewer.open",
         "onCommand:nerdfever.ansi-viewer.edit",
         "onCommand:nerdfever.ansi-viewer.toggleWrap",
